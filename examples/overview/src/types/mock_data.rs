@@ -15,6 +15,7 @@ impl Default for Data {
 
 pub enum DataActions {
     AddData((i32, String, i64)),
+    #[allow(dead_code)]
     RemoveData(i32),
     RandomizeData,
 }

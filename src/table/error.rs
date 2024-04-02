@@ -1,11 +1,16 @@
+//! Error types for the table module.
+
 use std::error;
 use std::fmt;
 
+/// Error types
 #[cfg(feature="table")]
 #[derive(Debug)]
 #[allow(dead_code)]
 pub enum Error {
+    /// Field has no HTML representation defined.
     NonRenderableField(String),
+    /// Invalid field name given.
     InvalidFieldName(String),
 }
 
@@ -38,5 +43,6 @@ impl error::Error for Error {
     }
 }
 
+/// Result type
 #[cfg(feature="table")]
 pub type Result<T> = std::result::Result<T, Error>;

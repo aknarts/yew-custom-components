@@ -2,6 +2,11 @@
 name = "overview"
 version = "0.1.0"
 edition = "2021"
+description = "A simple overview of the yew-custom-components library"
+license = "MIT"
+repository = "https://github.com/aknarts/yew-custom-components/tree/main/examples/overview"
+keywords = ["yew", "web-components", "custom-elements", "wasm"]
+categories = ["web-programming", "wasm"]
 
 [dependencies]
 console_error_panic_hook = "0.1"

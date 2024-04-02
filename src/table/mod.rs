@@ -1,3 +1,6 @@
+//! Table component.
+//!
+//! This component is a table that can be sorted by columns.
 use std::fmt::Debug;
 use types::{Column, TableData, TableOrder, TableState};
 use yew::html;
@@ -9,12 +12,17 @@ mod head;
 mod macros;
 pub mod types;
 
+/// Options for the Table component.
 #[cfg(feature="table")]
 #[derive(Clone, Eq, PartialEq, Default)]
 pub struct Options {
+    /// Css classes for the unordered state.
     pub unordered_class: Option<String>,
+    /// Css classes for the ascending state.
     pub ascending_class: Option<String>,
+    /// Css classes for the descending state.
     pub descending_class: Option<String>,
+    /// Css classes for the orderable state.
     pub orderable_classes: Vec<String>,
 }
 
@@ -25,28 +33,38 @@ pub struct Props<T>
 where
     T: TableData + Debug,
 {
+    /// Columns of the table.
     pub columns: Vec<Column>,
+    /// Table data
     pub data: Vec<T>,
+    /// Whether the table is orderable.
     #[prop_or(false)]
     pub orderable: bool,
+    /// Css classes for the table.
     #[prop_or_default]
     pub classes: Classes,
+    /// Search string.
     #[prop_or_default]
     pub search: Option<String>,
+    /// Options for the table.
     #[prop_or_default]
     pub options: Options,
 }
 
+/// Messages for the Table component.
 #[cfg(feature="table")]
 #[derive(Debug)]
 pub enum Msg<T>
 where
     T: TableData + Debug,
 {
+    /// Sort a column.
     SortColumn(usize),
+    /// Set the data of the table.
     SetData(Vec<T>),
 }
 
+/// Data for the Table component.
 #[cfg(feature="table")]
 #[derive(Clone, Eq, PartialEq, Default)]
 pub struct Data<T>
@@ -87,12 +105,24 @@ where
     }
 }
 
+/// Wrapper for the search string
 #[cfg(feature="table")]
 #[derive(Clone, Eq, PartialEq, Default)]
 pub struct Search {
+    /// Search string.
     pub search: Option<String>,
 }
 
+/// Table component.
+///
+/// # Properties
+///
+/// * `columns` - Columns of the table.
+/// * `data` - Table data.
+/// * `orderable` - Whether the table is orderable.
+/// * `classes` - Css classes for the table.
+/// * `search` - Search string.
+/// * `options` - Options for the table.
 #[cfg(feature="table")]
 #[function_component(Table)]
 pub fn table<T>(props: &Props<T>) -> Html

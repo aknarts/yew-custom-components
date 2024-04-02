@@ -1,3 +1,14 @@
+/// Macro to build columns for a table
+///
+/// # Example
+///
+/// ```rust
+/// let columns = vec![
+///    column!("date", "Date"),
+///   column!("type", "Type"),
+///  column!("amount", "Amount"),
+/// ];
+/// ```
 #[cfg(feature="table")]
 #[macro_export]
 macro_rules! column {
@@ -39,6 +50,8 @@ macro_rules! column {
     };
 }
 
+
+/// Macro to build columns for a table
 #[cfg(feature="table")]
 #[macro_export]
 macro_rules! columns {

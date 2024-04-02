@@ -1,9 +1,19 @@
+//! Tabs component
+//!
+//! # Properties
+//!
+//! * tabs: `Vec<String>` - List of tab names
+//!
+//! Construct individual tab contents by supplying it as children to the `Tabs` component
 use yew::{classes, function_component, html, use_state, Callback, Children, Html, Properties};
 
+/// Properties of the Tabs component
 #[cfg(feature="tabs")]
 #[derive(Properties, Clone, PartialEq)]
 pub struct Props {
+    /// Children of the Tabs component
     pub children: Children,
+    /// List of tab names
     pub tabs: Vec<String>,
 }
 
