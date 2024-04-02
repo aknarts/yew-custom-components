@@ -44,12 +44,12 @@ pub fn app() -> Html {
 
     html! {
         <ContextProvider<UseStateHandle<crate::types::theme::Theme>> context={ctx}>
-            <BrowserRouter>
+            <HashRouter>
                 <header::Header />
                 <main>
                     <Switch<Route> render={switch} />
                 </main>
-            </BrowserRouter>
+            </HashRouter>
         </ContextProvider<UseStateHandle<crate::types::theme::Theme>>>
     }
 }
