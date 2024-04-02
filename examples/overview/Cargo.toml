@@ -1,0 +1,19 @@
+[package]
+name = "overview"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+console_error_panic_hook = "0.1"
+gloo-storage = "0.3"
+lazy_static = "1.4"
+rand = { version = "0.8"}
+serde = { version = "1", features = ["derive"] }
+serde-value = "0.7"
+tracing = "0.1"
+tracing-wasm = "0.2"
+yew = { version = "0.21.0", features = ["csr"] }
+yew-custom-components = { path = "../..", features = ["table", "tabs"] }
+yew-hooks = "0.3"
+yew-router = "0.18"
+web-sys = { version = "0.3", features = ["HtmlInputElement","Document", "Window"] }
