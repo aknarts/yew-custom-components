@@ -205,7 +205,7 @@ struct TableLine {
 
 impl PartialEq<Self> for TableLine {
     fn eq(&self, other: &Self) -> bool {
-        self.name == other.name && self.value == other.value
+        self.name == other.name && self.value == other.value && self.checked == other.checked
     }
 }
 
@@ -237,6 +237,7 @@ impl TableData for TableLine {
             "id" => Ok(serde_value::Value::I32(self.id)),
             "name" => Ok(serde_value::Value::String(self.name.clone())),
             "value" => Ok(serde_value::Value::I64(self.value)),
+            "select" => Ok(serde_value::Value::Bool(self.checked)),
             _ => Ok(serde_value::to_value(()).unwrap()),
         }
     }
