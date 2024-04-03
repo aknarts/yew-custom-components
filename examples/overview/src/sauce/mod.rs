@@ -47,7 +47,9 @@ pub fn app() -> Html {
             <HashRouter>
                 <header::Header />
                 <main>
-                    <Switch<Route> render={switch} />
+                    <div class="container mt-2">
+                        <Switch<Route> render={switch} />
+                    </div>
                 </main>
             </HashRouter>
         </ContextProvider<UseStateHandle<crate::types::theme::Theme>>>
