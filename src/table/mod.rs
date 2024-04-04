@@ -49,6 +49,12 @@ where
     /// Options for the table.
     #[prop_or_default]
     pub options: Options,
+    /// Limit of data displayed for pagination
+    #[prop_or(None)]
+    pub limit: Option<usize>,
+    /// Page for pagination
+    #[prop_or(0)]
+    pub page: usize,
 }
 
 /// Messages for the Table component.
@@ -113,6 +119,16 @@ pub struct Search {
     pub search: Option<String>,
 }
 
+/// Pagination structure
+#[cfg(feature="table")]
+#[derive(Clone, Eq, PartialEq, Default)]
+pub struct Pagination {
+    /// Limit of data displayed for pagination
+    pub limit: Option<usize>,
+    /// Page for pagination
+    pub page: usize,
+}
+
 /// Table component.
 ///
 /// # Properties
@@ -150,6 +166,9 @@ where
     let classes = props.classes.clone();
     let options = props.options.clone();
 
+    let limit = props.limit;
+    let page = props.page;
+
     html! {
         <ContextProvider<UseReducerHandle<Data<T>>> context={state}>
             <table class={classes!(classes)}>
@@ -157,7 +176,9 @@ where
                     <head::TableHead<T> />
                 </ContextProvider<Options>>
                 <ContextProvider<Search> context={search}>
-                    <body::TableBody<T> />
+                    <ContextProvider<Pagination> context={Pagination { limit, page }}>
+                        <body::TableBody<T> />
+                    </ContextProvider<Pagination>>
                 </ContextProvider<Search>>
             </table>
         </ContextProvider<UseReducerHandle<Data<T>>>>

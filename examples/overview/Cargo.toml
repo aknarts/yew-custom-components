@@ -18,7 +18,7 @@ serde-value = "0.7"
 tracing = "0.1"
 tracing-wasm = "0.2"
 yew = { version = "0.21.0", features = ["csr"] }
-yew-custom-components = { path = "../..", features = ["table", "tabs"] }
+yew-custom-components = { path = "../..", features = ["table", "tabs", "pagination"] }
 yew-hooks = "0.3"
 yew-router = "0.18"
 web-sys = { version = "0.3", features = ["HtmlInputElement","Document", "Window"] }

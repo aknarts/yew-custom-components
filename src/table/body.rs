@@ -9,6 +9,7 @@ where
     T: TableData + Debug,
 {
     let state = use_context::<UseReducerHandle<super::Data<T>>>().unwrap();
+    let pagination = use_context::<super::Pagination>().unwrap();
     let mut data = state.data.clone();
     let columns = state.columns.clone();
     let order = state.state.order.clone();
@@ -42,6 +43,14 @@ where
             }
         }
     };
+
+    if let Some(limit) = pagination.limit {
+        data = data
+            .into_iter()
+            .skip(pagination.page * limit)
+            .take(limit)
+            .collect();
+    }
 
     html!(<tbody>
         {for data.iter().map(|row| {

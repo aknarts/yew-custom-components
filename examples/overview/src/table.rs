@@ -3,6 +3,7 @@ use yew::{Callback, classes, function_component, Html, html, TargetCast, use_red
 use serde::Serialize;
 use web_sys::{HtmlInputElement, InputEvent, MouseEvent};
 use yew_hooks::use_set;
+use yew_custom_components::pagination::Pagination;
 use yew_custom_components::table::{Options, Table};
 use yew_custom_components::table::types::{ColumnBuilder, TableData};
 
@@ -15,6 +16,9 @@ pub fn table_example() -> Html {
     // Search term
     let search_term = use_state(|| None::<String>);
     let search = (*search_term).as_ref().cloned();
+
+    let page=use_state(||0usize);
+    let current_page=(*page).clone();
 
     // Sum data
     let selected_indexes = use_set(HashSet::<usize>::new());
@@ -155,6 +159,7 @@ pub fn table_example() -> Html {
         })
     };
 
+
     // Randomize data values in the table
     let onclick_random = {
         let dispatcher = data.dispatcher().clone();
@@ -164,6 +169,20 @@ pub fn table_example() -> Html {
         })
     };
 
+    let pagination_options = yew_custom_components::pagination::Options::default()
+        .show_prev_next(true)
+        .list_classes(vec!(String::from("pagination")))
+        .item_classes(vec!(String::from("page-item")))
+        .link_classes(vec!(String::from("page-link")))
+        .active_item_classes(vec!(String::from("active")))
+        .disabled_item_classes(vec!(String::from("disabled")));
+
+    let handle_page = {
+        let page = page.clone();
+        Callback::from(move |id: usize| {
+            page.set(id);
+        })
+    };
 
     html!(
         <>
@@ -186,7 +205,8 @@ pub fn table_example() -> Html {
                 </span>
                 <input class="form-control" type="text" id="search" placeholder="Search" oninput={oninput_search} />
             </div>
-            <Table<TableLine> options={options.clone()} search={search.clone()} classes={classes!("table", "table-hover")} columns={columns.clone()} data={table_data.clone()} orderable={true}/>
+            <Table<TableLine> options={options.clone()} limit={Some(10)} page={current_page} search={search.clone()} classes={classes!("table", "table-hover")} columns={columns.clone()} data={table_data.clone()} orderable={true}/>
+            <Pagination total={table_data.len()} limit={10} options={pagination_options} on_page={Some(handle_page)}/>
             <h5>{"Sum of selected"} <span class="badge text-bg-secondary">{sum}</span></h5>
         </>
     )

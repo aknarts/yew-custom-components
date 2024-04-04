@@ -19,3 +19,4 @@ serde-value = { version = "0.7", optional = true }
 [features]
 table = ["dep:serde", "dep:serde-value"]
 tabs = []
+pagination= []

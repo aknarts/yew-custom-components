@@ -13,3 +13,5 @@
 pub mod table;
 #[cfg(feature="tabs")]
 pub mod tabs;
+#[cfg(feature="pagination")]
+pub mod pagination;
