@@ -1,7 +1,7 @@
 workspace = { members = ["examples/overview"] }
 [package]
 name = "yew-custom-components"
-version = "0.1.0"
+version = "0.2.1"
 edition = "2021"
 description = "A collection of custom components for Yew"
 license = "MIT"

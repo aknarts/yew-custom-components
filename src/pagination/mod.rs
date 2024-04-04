@@ -4,7 +4,7 @@ use yew::{classes, function_component, html, use_state, Callback, Html, Properti
 
 /// Options for the pagination component
 #[cfg(feature="pagination")]
-#[derive(Clone, Default, PartialEq)]
+#[derive(Clone, PartialEq)]
 pub struct Options {
     /// Show previous/next button
     pub show_prev_next: bool,
@@ -18,9 +18,33 @@ pub struct Options {
     pub active_item_classes: Vec<String>,
     /// Disabled item classes
     pub disabled_item_classes: Vec<String>,
+    /// Previous text
+    pub prev_text: String,
+    /// Next text
+    pub next_text: String,
+}
+
+impl Default for Options {
+    fn default() -> Self {
+        Options {
+            show_prev_next: true,
+            list_classes: vec![String::from("pagination")],
+            item_classes: vec![String::from("page-item")],
+            link_classes: vec![String::from("page-link")],
+            active_item_classes: vec![String::from("active")],
+            disabled_item_classes: vec![String::from("disabled")],
+            prev_text: String::from("Previous"),
+            next_text: String::from("Next"),
+        }
+    }
 }
 
 impl Options {
+    /// Create new options
+    pub fn new() -> Self {
+        Self::default()
+    }
+
     /// Set the show_prev_next option
     pub fn show_prev_next(mut self, show_prev_next: bool) -> Self {
         self.show_prev_next = show_prev_next;
@@ -111,7 +135,7 @@ pub fn pagination(props: &Props) -> Html {
                             None
                         };
                         html! {
-                            <li class={classes!(options.item_classes.clone(), disabled_class)}><a class={classes!(options.link_classes.clone())} onclick={ let handle_page= handle_page.clone(); move |_| { handle_page.emit(current_page-1); }} href="#">{ "Previous" }</a></li>
+                            <li class={classes!(options.item_classes.clone(), disabled_class)}><a class={classes!(options.link_classes.clone())} onclick={ let handle_page= handle_page.clone(); move |_| { handle_page.emit(current_page-1); }} href="#">{  options.prev_text }</a></li>
                         }
                     } else {
                         html!()
@@ -144,7 +168,7 @@ pub fn pagination(props: &Props) -> Html {
                             None
                         };
                         html! {
-                            <li class={classes!(options.item_classes.clone(), disabled_class)}><a class={classes!(options.link_classes.clone())} onclick={ let handle_page= handle_page.clone(); move |_| { handle_page.emit(current_page+1); }} href="#">{ "Next" }</a></li>
+                            <li class={classes!(options.item_classes.clone(), disabled_class)}><a class={classes!(options.link_classes.clone())} onclick={ let handle_page= handle_page.clone(); move |_| { handle_page.emit(current_page+1); }} href="#">{ options.next_text }</a></li>
                         }
                     } else {
                         html!()
