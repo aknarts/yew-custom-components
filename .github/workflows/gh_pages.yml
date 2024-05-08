@@ -42,7 +42,7 @@ jobs:
         run: |
           rustup target add wasm32-unknown-unknown
       - name: Build the Rust WASM app and all of its assets
-        run: trunk build --minify --public-url /${{ github.event.repository.name }} --release
+        run: trunk build --public-url /${{ github.event.repository.name }} --release
         working-directory: examples/overview
       - name: Setup Pages
         uses: actions/configure-pages@v5
