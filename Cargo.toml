@@ -1,7 +1,7 @@
 workspace = { members = ["examples/overview"] }
 [package]
 name = "yew-custom-components"
-version = "0.2.1"
+version = "0.2.2"
 edition = "2021"
 description = "A collection of custom components for Yew"
 license = "MIT"
@@ -15,6 +15,7 @@ categories = ["web-programming", "wasm"]
 yew = { version = "0.21.0", features = ["csr"] }
 serde = { version = "1", optional = true }
 serde-value = { version = "0.7", optional = true }
+log = "0.4.21"
 
 [features]
 table = ["dep:serde", "dep:serde-value"]

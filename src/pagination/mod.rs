@@ -3,7 +3,7 @@
 use yew::{classes, function_component, html, use_state, Callback, Html, Properties};
 
 /// Options for the pagination component
-#[cfg(feature="pagination")]
+#[cfg(feature = "pagination")]
 #[derive(Clone, PartialEq)]
 pub struct Options {
     /// Show previous/next button
@@ -22,12 +22,20 @@ pub struct Options {
     pub prev_text: String,
     /// Next text
     pub next_text: String,
+    /// Show first/last button
+    pub show_first_last: bool,
+    /// First text
+    pub first_text: String,
+    /// Last text
+    pub last_text: String,
 }
 
 impl Default for Options {
     fn default() -> Self {
         Options {
             show_prev_next: true,
+            show_first_last: false,
+            first_text: String::from("First"),
             list_classes: vec![String::from("pagination")],
             item_classes: vec![String::from("page-item")],
             link_classes: vec![String::from("page-link")],
@@ -35,6 +43,7 @@ impl Default for Options {
             disabled_item_classes: vec![String::from("disabled")],
             prev_text: String::from("Previous"),
             next_text: String::from("Next"),
+            last_text: String::from("Last"),
         }
     }
 }
@@ -48,6 +57,36 @@ impl Options {
     /// Set the show_prev_next option
     pub fn show_prev_next(mut self, show_prev_next: bool) -> Self {
         self.show_prev_next = show_prev_next;
+        self
+    }
+
+    /// Set the show_first_last option
+    pub fn show_first_last(mut self, show_first_last: bool) -> Self {
+        self.show_first_last = show_first_last;
+        self
+    }
+
+    /// Set the first text
+    pub fn first_text(mut self, first_text: String) -> Self {
+        self.first_text = first_text;
+        self
+    }
+
+    /// Set the last text
+    pub fn last_text(mut self, last_text: String) -> Self {
+        self.last_text = last_text;
+        self
+    }
+
+    /// Set the previous text
+    pub fn prev_text(mut self, prev_text: String) -> Self {
+        self.prev_text = prev_text;
+        self
+    }
+
+    /// Set the next text
+    pub fn next_text(mut self, next_text: String) -> Self {
+        self.next_text = next_text;
         self
     }
 
@@ -83,13 +122,16 @@ impl Options {
 }
 
 /// Properties of the pagination component
-#[cfg(feature="pagination")]
+#[cfg(feature = "pagination")]
 #[derive(Properties, Clone, PartialEq)]
 pub struct Props {
     /// Total number of items
     pub total: usize,
     /// Limit per page
     pub limit: usize,
+    /// Max pages displayed
+    #[prop_or_default]
+    pub max_pages: Option<usize>,
     /// Options
     #[prop_or_default]
     pub options: Options,
@@ -99,7 +141,7 @@ pub struct Props {
 }
 
 /// Pagination component
-#[cfg(feature="pagination")]
+#[cfg(feature = "pagination")]
 #[function_component(Pagination)]
 pub fn pagination(props: &Props) -> Html {
     let page = use_state(|| 0usize);
@@ -124,9 +166,42 @@ pub fn pagination(props: &Props) -> Html {
         total_pages + 1
     };
 
-    html! (
+    let pages = match props.max_pages {
+        None => {0..total_pages}
+        Some(max) => {
+            let start = if current_page < max/2 {
+                0
+            } else if current_page >= total_pages - max/2 {
+                total_pages - max
+            } else {
+                current_page - max/2
+            };
+            let end = if start + max > total_pages {
+                total_pages
+            } else {
+                start + max
+            };
+            start..end
+        }
+    };
+
+    html!(
         <nav>
-            <ul class={classes!("pagination", options.list_classes)}>
+            <ul class={classes!("flex-wrap","pagination", options.list_classes)}>
+                 {
+                    if options.show_first_last {
+                        let disabled_class = if current_page==0 {
+                            Some(options.disabled_item_classes.clone())
+                        } else {
+                            None
+                        };
+                        html! {
+                            <li class={classes!(options.item_classes.clone(), disabled_class)}><a class={classes!(options.link_classes.clone())} onclick={ let handle_page= handle_page.clone(); move |_| { handle_page.emit(0); }} href="#">{  options.first_text }</a></li>
+                        }
+                    } else {
+                        html!()
+                    }
+                }
                 {
                     if options.show_prev_next {
                         let disabled_class = if current_page==0 {
@@ -142,7 +217,7 @@ pub fn pagination(props: &Props) -> Html {
                     }
                 }
                 {
-                    (0..total_pages).map(|index| {
+                    pages.map(|index| {
                         let class = if current_page==index {
                             Some(vec![options.active_item_classes.clone()])
                         } else {
@@ -174,8 +249,21 @@ pub fn pagination(props: &Props) -> Html {
                         html!()
                     }
                 }
+                {
+                    if options.show_first_last {
+                        let disabled_class = if current_page==total_pages-1 {
+                            Some(options.disabled_item_classes.clone())
+                        } else {
+                            None
+                        };
+                        html! {
+                            <li class={classes!(options.item_classes.clone(), disabled_class)}><a class={classes!(options.link_classes.clone())} onclick={ let handle_page= handle_page.clone(); move |_| { handle_page.emit(total_pages-1); }} href="#">{  options.last_text }</a></li>
+                        }
+                    } else {
+                        html!()
+                    }
+                }
             </ul>
         </nav>
     )
-
 }

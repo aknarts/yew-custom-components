@@ -171,6 +171,7 @@ pub fn table_example() -> Html {
 
     let pagination_options = yew_custom_components::pagination::Options::default()
         .show_prev_next(true)
+        .show_first_last(true)
         .list_classes(vec!(String::from("pagination")))
         .item_classes(vec!(String::from("page-item")))
         .link_classes(vec!(String::from("page-link")))
@@ -205,8 +206,8 @@ pub fn table_example() -> Html {
                 </span>
                 <input class="form-control" type="text" id="search" placeholder="Search" oninput={oninput_search} />
             </div>
-            <Table<TableLine> options={options.clone()} limit={Some(10)} page={current_page} search={search.clone()} classes={classes!("table", "table-hover")} columns={columns.clone()} data={table_data.clone()} orderable={true}/>
-            <Pagination total={table_data.len()} limit={10} options={pagination_options} on_page={Some(handle_page)}/>
+            <Table<TableLine> options={options.clone()} limit={Some(2)} page={current_page} search={search.clone()} classes={classes!("table", "table-hover")} columns={columns.clone()} data={table_data.clone()} orderable={true}/>
+            <Pagination total={table_data.len()} limit={2} max_pages={5} options={pagination_options} on_page={Some(handle_page)}/>
             <h5>{"Sum of selected"} <span class="badge text-bg-secondary">{sum}</span></h5>
         </>
     )
