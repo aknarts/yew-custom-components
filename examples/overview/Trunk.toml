@@ -1,4 +1,0 @@
-trunk-version = "*"
-
-[build]
-minify = "on_release"
